@@ -1,0 +1,5 @@
+computeDemond.py is designed to get demond information from csv files for each station.
+
+Since it will take a long time to process, I partition the task into 8 ones so that it can be paralleled.
+
+So we need to run these 8 programs at the same time to get the whole result.
