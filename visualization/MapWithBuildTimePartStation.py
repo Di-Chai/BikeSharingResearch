@@ -14,30 +14,42 @@ lat = bikeLocation['lat']
 lng = bikeLocation['lng']
 buildOrder = bikeLocation['buildOrder']
 name = bikeLocation['name']
-idList = bikeLocation['idList']
-# set different color
 
-S_STAR = ['3489', '3461', '3431', '3485', '3632', '3468', '3463', '3249', '3469', '3281', '3472', '3428', '3481']
+# get the new plot list
+newLat = []
+newLng = []
+newBuildOrder = []
+newName = []
+threshold = 10
+for i in range(buildOrder.__len__()):
+    if buildOrder[i] < threshold:
+        newLat.append(lat[i])
+        newLng.append(lng[i])
+        newBuildOrder.append(buildOrder[i])
+        newName.append(name[i])
 
+# bikeStations = [Scattermapbox(
+#         lon = lng,
+#         lat = lat,
+#         text = name,
+#         mode='markers',
+#         marker = dict(
+#             size = 6,
+#             color = ['rgb(%s, %s, %s)' % (255, 195-e, 195-e) for e in buildOrder],
+#             opacity=1
+#         ))]
 
-
-color = []
-for i in range(idList.__len__()):
-    stationID = idList[i]
-    if stationID in S_STAR:
-        color.append('rgb(0, 0, 255)')
-    else:
-        color.append('rgb(%s, %s, %s)' % (255, 195-buildOrder[i], 195-buildOrder[i]))
+maxBuildOrder = max(newBuildOrder)
 
 bikeStations = [Scattermapbox(
-        lon = lng,
-        lat = lat,
-        text = name,
+        lon = newLng,
+        lat = newLat,
+        text = newName,
         mode='markers',
         marker = dict(
             size = 6,
-            color = color,  # ['rgb(%s, %s, %s)' % (255, 195-e, 195-e) for e in buildOrder],
-            opacity=1,
+            color = ['rgb(%s, %s, %s)' % (255, 195-e, 195-e) for e in newBuildOrder],
+            opacity=1
         ))]
 
 layout = Layout(
@@ -59,4 +71,4 @@ layout = Layout(
 )
 
 fig = dict(data=bikeStations, layout=layout)
-plotly.offline.plot(fig, filename=os.path.join(htmlPath, 'BikeStationLocationWithBuildTime'))
+plotly.offline.plot(fig, filename=os.path.join(htmlPath, 'BikeStationLocationWithBuildTimePartStation'))
